@@ -1,0 +1,26 @@
+/* DEFAULT PROJECT
+  {
+    "name": "NAME OF PROJECT",
+    "type": "TYPE OF PROJECT",
+    "completed": [
+      {
+        "name": "TASK NAME"
+      }
+    ],
+    "ideas": [
+      {
+        "name": "IDEA NAME"
+      }
+    ],
+    "tasks": [
+      {
+        "name": "TASK NAME"
+      }
+    ],
+    "bugs": [
+      {
+        "name": "BUG NAME"
+      }
+    ]
+  }
+*/

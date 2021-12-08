@@ -54,19 +54,7 @@ client.once('ready', () => {
 	console.log('Ready!');
 });
 
-//COMMANDS
-  //REGISTER COMMANDS
-
-    const commands = [
-      new SlashCommandBuilder().setName('project').setDescription('View project command')
-    ]
-      .map(command => command.toJSON());
-
-    const rest = new REST({ version: '9' }).setToken(token);
-
-    rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
-      .then(() => console.log('Successfully registered application commands.'))
-      .catch(console.error);
+//COMMAND
   //INTERACT COMMANDS
     client.on('interactionCreate', async interaction => {
       if (!interaction.isCommand() && !interaction.isButton()) return;
@@ -80,24 +68,64 @@ client.once('ready', () => {
           .setCustomId('create')
           .setLabel('Create')
           .setStyle('SUCCESS'),
-           );
-
+          new MessageButton()
+          .setCustomId('view')
+          .setLabel("View projects")
+          .setStyle('SUCCESS'),
+            );
           await interaction.reply({ content: 'The list of commands :', components: [row]});
       }
-      const filter = i => i.customId === 'create';
+      const filter = i => i.customId === 'create' || i.customId === 'view';
 
       const collector = interaction.channel.createMessageComponentCollector({ filter, time: 15000 });
 
       collector.on('collect', async i => {
         if (i.customId === 'create') {
-
           await i.update({ content: 'JSON FILE', components: [] });
+        } else if (i.customId === "view") {
+          var result = viewProject("Inventaire");
+          console.log(result);
+          await i.update({ content: result, components: [] });
         }
       });
 
       collector.on('end', collected => console.log(`Collected ${collected.size} items`));
     });
 
+
+function viewProject(projectName) {
+  console.log("1");
+  try {
+
+      const data = fs.readFileSync('./db.json', 'utf8');
+      console.log("2");
+      // parse JSON string to JSON object
+      const databases = JSON.parse(data);
+      var finished = false;
+
+      // print all databases
+      databases.forEach(db => {
+          if (finished) return;
+          console.log("3");
+          if (db.name === projectName) {
+            console.log("4");
+            var result = ""
+            var type = db.type
+            db.completed.forEach(completed => {
+              console.log("5");
+              result = result + ` | ${completed.name}`
+            })
+            console.log(result)
+            finished = true;
+            return result;
+          }
+      });
+
+  } catch (err) {
+      console.log("10");
+      console.log(`Error reading file from disk: ${err}`);
+  }
+};
 
 // Login to Discord with your client's token
 client.login(token);
