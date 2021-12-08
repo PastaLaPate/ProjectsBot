@@ -1,15 +1,53 @@
+// DISCORD
+
 const { Client, Intents } = require('discord.js');
 const { clientId, guildId, token } = require('./config.json');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
+const { MessageActionRow, MessageButton } = require('discord.js');
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 // LIBS
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const { MessageActionRow, MessageButton } = require('discord.js');
+const fs = require('fs');
+
+// DB
+
+let test = {
+  name: "SCRIPTING",
+  type: "Devlopement"
+}
+
+fs.readFile('./db.json', 'utf8', (err, data) => {
+
+    if (err) {
+        console.log(`Error reading file from disk: ${err}`);
+    } else {
+
+        // parse JSON string to JSON object
+        const databases = JSON.parse(data);
+
+        // add a new record
+        databases.push({
+            name: 'Postgres',
+            type: 'RDBMS'
+        });
+
+        // write new data back to the file
+        console.log("Succesfully readFile")
+        fs.writeFile('./db.json', JSON.stringify(databases, null, 4), (err) => {
+            if (err) {
+                console.log(`Error writing file: ${err}`);
+            } else {
+              console.log("Succesfully writeFile")
+            }
+        });
+    }
+
+});
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
@@ -52,7 +90,8 @@ client.once('ready', () => {
 
       collector.on('collect', async i => {
         if (i.customId === 'create') {
-          await i.update({ content: 'A button was clicked!', components: [] });
+
+          await i.update({ content: 'JSON FILE', components: [] });
         }
       });
 
