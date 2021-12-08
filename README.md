@@ -1,7 +1,7 @@
 # ProjectsBot
 INSTALL : <br>
-First command : ```
+First command : ```sh
 npm -y init```
 <br>
-Second command : ```npm install```<br>
-Third command : ```npm install discord.js @discordjs/builders @discordjs/rest discord-api-types```
+Second command : ```npm install discord.js```<br>
+Third command : ```npm install @discordjs/builders @discordjs/rest discord-api-types```
