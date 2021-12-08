@@ -1,6 +1,6 @@
 # ProjectsBot
 INSTALL : <br>
-First command : ```sh
+First command : ```js
 npm -y init```
 <br>
 Second command : ```npm install discord.js```<br>
